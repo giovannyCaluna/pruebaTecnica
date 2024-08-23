@@ -1,6 +1,8 @@
 package com.bank.demo.controllers;
 
+import com.bank.demo.DTOs.CuentaReporte;
 import com.bank.demo.DTOs.Report;
+import com.bank.demo.DTOs.ReportLine;
 import com.bank.demo.models.Cliente;
 import com.bank.demo.models.Persona;
 import com.bank.demo.services.ClienteService;
@@ -109,15 +111,44 @@ public class ClienteRestControllerTest {
 
 
     @Test
-    public void testGetReportes() throws Exception {
+    public void testGetReporteVacio() throws Exception {
         // Arrange
         String clienteId = "1"; //clienteid sin cuentas
-        LocalDate [] dates = { LocalDate.of(2023, 1, 1), LocalDate.of(2023, 12, 31)};
+        LocalDate[] dates = {LocalDate.of(2023, 1, 1), LocalDate.of(2023, 12, 31)};
         Report report = new Report();
         report.setCliente(clienteId);
         report.setFechaReporte(new Date());
         report.setCuentas(new ArrayList<>());
         when(clienteService.generateReport(clienteId, dates)).thenReturn(report);
+
+
+
+        mockMvc.perform(get("/api/cliente/{clienteid}/reporte", clienteId)
+                        .param("fecha", dates[0].toString(), dates[1].toString()))
+                .andExpect(status().isOk())
+                .andExpect(content().json(objectMapper.writeValueAsString(report)));
+    }
+
+    @Test
+    public void testGetReporte() throws Exception {
+        // Arrange
+
+        // Create some example data
+        ReportLine line1 = new ReportLine(new Date(), "Deposit", 1000.0, 200.0, 1200.0);
+        ReportLine line2 = new ReportLine(new Date(), "Withdrawal", 1200.0, -300.0, 900.0);
+        List<ReportLine> reportLines = Arrays.asList(line1, line2);
+
+        CuentaReporte cuenta1 = new CuentaReporte("1234567890", "Checking", true, reportLines);
+        CuentaReporte cuenta2 = new CuentaReporte("0987654321", "Savings", true, reportLines);
+        List<CuentaReporte> cuentas = Arrays.asList(cuenta1, cuenta2);
+
+        Report reporteCliente = new Report("2", "John Doe", new Date(), cuentas);
+
+
+        String clienteId = "2"; //clienteid sin cuentas
+        LocalDate[] dates = {LocalDate.of(2023, 1, 1), LocalDate.of(2023, 12, 31)};
+
+        when(clienteService.generateReport(clienteId, dates)).thenReturn(reporteCliente);
 
         // Act & Assert
         Timestamp startDate = Timestamp.valueOf(dates[0].atStartOfDay().plusDays(1));
@@ -125,6 +156,6 @@ public class ClienteRestControllerTest {
         mockMvc.perform(get("/api/cliente/{clienteid}/reporte", clienteId)
                         .param("fecha", dates[0].toString(), dates[1].toString()))
                 .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(report)));
+                .andExpect(content().json(objectMapper.writeValueAsString(reporteCliente)));
     }
 }
