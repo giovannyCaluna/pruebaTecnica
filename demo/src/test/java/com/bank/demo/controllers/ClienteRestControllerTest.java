@@ -151,8 +151,6 @@ public class ClienteRestControllerTest {
         when(clienteService.generateReport(clienteId, dates)).thenReturn(reporteCliente);
 
         // Act & Assert
-        Timestamp startDate = Timestamp.valueOf(dates[0].atStartOfDay().plusDays(1));
-
         mockMvc.perform(get("/api/cliente/{clienteid}/reporte", clienteId)
                         .param("fecha", dates[0].toString(), dates[1].toString()))
                 .andExpect(status().isOk())
