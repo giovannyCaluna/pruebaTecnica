@@ -22,14 +22,12 @@ public class PersonaServiceTests {
     private PersonaRepository personaRepository;
 
     @Test
-    public void testSavePersona() {
+    public void testSavePersona() throws Exception {
         // Arrange
         Persona persona = new Persona("123456789", "John Doe", "Male", 30, "1234 Elm St", "555-1234");
         when(personaRepository.save(persona)).thenReturn(persona);
-
         // Act
         Persona savedPersona = personaService.savePersona(persona);
-
         // Assert
         assertThat(savedPersona).isEqualTo(persona);  // Check if the returned persona is the same as the input
         verify(personaRepository).save(persona);  // Verify if the save method was called on the repository

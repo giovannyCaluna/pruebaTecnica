@@ -34,13 +34,13 @@ public class ClienteService {
         return this.clienteRespository.findAll();
     }
 
-    public Cliente createClient(Cliente cliente) {
+    public Cliente createClient(Cliente cliente) throws Exception {
         this.personaService.savePersona(cliente.getPersona());
         return this.clienteRespository.save(cliente);
     }
 
     public Cliente updateClient(Cliente cliente) {
-        this.personaService.savePersona(cliente.getPersona());
+        this.personaService.updatePersona(cliente.getPersona());
         return this.clienteRespository.save(cliente);
     }
 
