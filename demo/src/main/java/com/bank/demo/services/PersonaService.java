@@ -20,11 +20,15 @@ public class PersonaService {
             throw new Exception("Usuario registrado");
         } else {
             return personaRepository.save(persona);
-
         }
     }
 
-    public Persona updatePersona(Persona persona) {
-        return personaRepository.save(persona);
+    public Persona updatePersona(Persona persona) throws Exception {
+        Optional<Persona> personaRegistrada = this.personaRepository.findById(persona.getIdentificacion());
+        if (!personaRegistrada.isPresent()) {
+            throw new Exception("Usuario NO registrado");
+        } else {
+            return personaRepository.save(persona);
+        }
     }
 }

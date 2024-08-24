@@ -39,7 +39,7 @@ public class ClienteService {
         return this.clienteRespository.save(cliente);
     }
 
-    public Cliente updateClient(Cliente cliente) {
+    public Cliente updateClient(Cliente cliente) throws Exception {
         this.personaService.updatePersona(cliente.getPersona());
         return this.clienteRespository.save(cliente);
     }
