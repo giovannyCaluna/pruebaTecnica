@@ -29,10 +29,12 @@ public class Cuenta {
     public Cuenta() {
     }
 
-    public Cuenta(String tipoCuenta, Double saldoInicial, Boolean estado) {
+    public Cuenta(String numeroCuenta,String tipoCuenta, Double saldoInicial, Boolean estado,Cliente cliente) {
+        this.numeroCuenta= numeroCuenta;
         this.tipoCuenta = tipoCuenta;
         this.saldoInicial = saldoInicial;
         this.estado = estado;
+        this.cliente = cliente;
     }
 
     public String getNumeroCuenta() {

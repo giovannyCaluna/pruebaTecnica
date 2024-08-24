@@ -40,11 +40,11 @@ public class CuentaDTO {
         this.tipo = tipo;
     }
 
-    public String getId() {
+    public String getCuentaid() {
         return cuentaid;
     }
 
-    public void setId(String cuentaid) {
+    public void setCuentaid(String cuentaid) {
         this.cuentaid = cuentaid;
     }
 }

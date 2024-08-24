@@ -1,16 +1,11 @@
 package com.bank.demo.controllers;
 
 import com.bank.demo.DTOs.CuentaDTO;
-import com.bank.demo.models.Cliente;
-import com.bank.demo.models.Cuenta;
-import com.bank.demo.services.ClienteService;
+import com.bank.demo.exceptions.ClienteNotFoundException;
 import com.bank.demo.services.CuentaService;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/cuenta")
@@ -32,7 +27,7 @@ public class CuentasRestcontroller {
     }
 
     @PostMapping
-    public ResponseEntity<?> createCuenta(@RequestBody CuentaDTO cuenta) throws Exception {
+    public ResponseEntity<?> createCuenta(@RequestBody CuentaDTO cuenta) throws Exception, ClienteNotFoundException {
         try{
             return new ResponseEntity<>(cuentaService.createCuenta(cuenta), HttpStatus.CREATED);
         }catch(Exception e){
@@ -54,10 +49,16 @@ public class CuentasRestcontroller {
     public ResponseEntity<?> deleteCuenta(@RequestBody CuentaDTO cuenta) throws Exception {
         try{
             cuentaService.deleteCuenta(cuenta);
-
             return new ResponseEntity<>(null, HttpStatus.OK);
         }catch(Exception e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+        @ExceptionHandler(ClienteNotFoundException.class)
+        public ResponseEntity<String> handleClienteNotFoundException(ClienteNotFoundException ex) {
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+        }
+
+
 }
