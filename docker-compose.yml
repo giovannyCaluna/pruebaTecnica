@@ -1,0 +1,36 @@
+version: '3.7'
+services:
+  app:
+    build:
+      context: ./demo/  # Path to the directory containing the Dockerfile
+      dockerfile: Dockerfile
+    image: 'demoapp:latest'
+    container_name: demoapp
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/bank-demo
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
+      SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.PostgreSQLDialect
+      SPRING_JPA_HIBERNATE_DDL_AUTO: none
+    depends_on:
+      - db  # Ensure the database starts before the application
+
+  db:
+    image: 'postgres:latest'
+    container_name: postgres
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: bank-demo
+    volumes:
+      - pgdata:/var/lib/postgresql/data1263  # Correct volume mapping for PostgreSQL data
+      - ./SQL:/docker-entrypoint-initdb.d  # Mount initialization scripts
+    ports:
+      - "5432:5432" # Exposing the default PostgreSQL port
+
+volumes:
+  pgdata:  # Define the named volume
+
