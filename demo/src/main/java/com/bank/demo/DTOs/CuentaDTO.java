@@ -1,6 +1,5 @@
 package com.bank.demo.DTOs;
 
-import java.util.Date;
 
 public class CuentaDTO {
     private String cuentaid;
@@ -12,6 +11,7 @@ public class CuentaDTO {
     public double getSaldoInicial() {
         return saldoInicial;
     }
+
     public void setSaldoInicial(double saldoInicial) {
         this.saldoInicial = saldoInicial;
     }

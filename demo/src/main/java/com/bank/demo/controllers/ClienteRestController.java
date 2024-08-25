@@ -39,33 +39,33 @@ public class ClienteRestController {
     }
 
 
-@PostMapping
-public ResponseEntity<?> createClient(@RequestBody Cliente cliente) {
-    try {
-        return new ResponseEntity<>(clienteService.createClient(cliente), HttpStatus.CREATED);
-    } catch (Exception e) {
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    @PostMapping
+    public ResponseEntity<?> createClient(@RequestBody Cliente cliente) {
+        try {
+            return new ResponseEntity<>(clienteService.createClient(cliente), HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
-}
 
-@PutMapping("/{clienteid}")
-public ResponseEntity<?> updateClient(@RequestBody Cliente cliente, @PathVariable String clienteid) {
-    try {
-        return new ResponseEntity<>(clienteService.updateClient(cliente, clienteid), HttpStatus.OK);
-    } catch (Exception e) {
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    @PutMapping("/{clienteid}")
+    public ResponseEntity<?> updateClient(@RequestBody Cliente cliente, @PathVariable String clienteid) {
+        try {
+            return new ResponseEntity<>(clienteService.updateClient(cliente, clienteid), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
-}
 
 
-@DeleteMapping("/{clienteid}")
-public ResponseEntity<?> deleteClient(@PathVariable String clienteid) {
-    try {
-        this.clienteService.deleteClient(clienteid);
-        return new ResponseEntity<>(HttpStatus.OK);
-    } catch (Exception e) {
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    @DeleteMapping("/{clienteid}")
+    public ResponseEntity<?> deleteClient(@PathVariable String clienteid) {
+        try {
+            this.clienteService.deleteClient(clienteid);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
-}
 
 }

@@ -38,10 +38,10 @@ public class ClienteService {
 
     public Cliente createClient(Cliente cliente) throws Exception {
         Optional<Cliente> clienteRegistrado = this.clienteRespository.findById(cliente.getClienteId());
-        Optional<Persona> personaRegistrada =  this.personaService.findByIdentificacion(cliente.getPersona().getIdentificacion());
+        Optional<Persona> personaRegistrada = this.personaService.findByIdentificacion(cliente.getPersona().getIdentificacion());
         if (clienteRegistrado.isPresent() || personaRegistrada.isPresent()) {
             throw new Exception("El cliente ya existe");
-        }else{
+        } else {
             this.personaService.savePersona(cliente.getPersona());
             return this.clienteRespository.save(cliente);
 
@@ -60,7 +60,7 @@ public class ClienteService {
             cliente.get().getPersona().setTelefono(clienteNuevo.getPersona().getTelefono());
             return this.clienteRespository.save(cliente.get());
 
-        }else{
+        } else {
             throw new Exception("Cliente no encontrado");
         }
     }
@@ -74,6 +74,7 @@ public class ClienteService {
         return this.clienteRespository.findById(clienteid);
 
     }
+
     public Report generateReport(String clientId, LocalDate[] fecha) throws Exception {
         Timestamp startDate = Timestamp.valueOf(fecha[0].atStartOfDay().plusDays(1));
         Timestamp endDate = Timestamp.valueOf(fecha[1].atStartOfDay().plusDays(1));
@@ -112,7 +113,7 @@ public class ClienteService {
 
             }
             report.setCuentas(cuentasReporte);
-        }else{
+        } else {
             throw new ClienteNotFoundException("El cliente no existe");
         }
         return report;

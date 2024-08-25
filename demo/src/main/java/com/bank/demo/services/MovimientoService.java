@@ -45,13 +45,13 @@ public class MovimientoService {
     }
 
     public Movimiento updateMovimiento(MovimientoDTO movimiento, Long movimientoId) throws Exception {
-        Optional<Movimiento>  prevMovimiento = this.movimientosRepository.findById(movimientoId);
+        Optional<Movimiento> prevMovimiento = this.movimientosRepository.findById(movimientoId);
         if (prevMovimiento.isPresent()) {
             prevMovimiento.get().setTipoMovimiento(movimiento.getTipoMovimiento());
             prevMovimiento.get().setFecha(new Date());
             return this.movimientosRepository.save(prevMovimiento.get());
-        }else{
-            throw  new Exception("No existe el movimiento");
+        } else {
+            throw new Exception("No existe el movimiento");
         }
 
     }

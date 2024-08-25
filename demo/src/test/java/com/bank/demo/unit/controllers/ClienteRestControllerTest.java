@@ -1,8 +1,9 @@
-package com.bank.demo.controllers;
+package com.bank.demo.unit.controllers;
 
 import com.bank.demo.DTOs.CuentaReporte;
 import com.bank.demo.DTOs.Report;
 import com.bank.demo.DTOs.ReportLine;
+import com.bank.demo.controllers.ClienteRestController;
 import com.bank.demo.models.Cliente;
 import com.bank.demo.models.Persona;
 import com.bank.demo.services.ClienteService;
@@ -81,9 +82,7 @@ public class ClienteRestControllerTest {
         // Act & Assert
         mockMvc.perform(post("/api/cliente")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"clienteId\":\"1\",\"contrasena\":\"password1\",\"estado\":true," +
-                                "\"persona\":{\"identificacion\":\"123456789\",\"nombre\":\"John Doe\",\"genero\":\"Male\"," +
-                                "\"edad\":30,\"direccion\":\"1234 Elm St\",\"telefono\":\"555-1234\"}}"))
+                        .content(objectMapper.writeValueAsString(cliente)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.clienteId").value(cliente.getClienteId()))
                 .andExpect(jsonPath("$.persona.nombre").value(persona.getNombre()));
@@ -91,21 +90,20 @@ public class ClienteRestControllerTest {
 
     @Test
     public void testUpdateClient() throws Exception {
-        // Arrange
-        Persona persona = new Persona("123456789", "John Doee", "Male", 30, "1234 Elm St", "555-1234");
-        Cliente cliente = new Cliente("1", "password1", true, persona);
+        Persona persona = new Persona("123456789", "John Doe", "Male", 30, "1234 Elm St", "555-1234");
+        Cliente cliente = new Cliente("CL001", "1234", true, persona);
 
-        when(clienteService.updateClient(cliente, cliente.getClienteId())).thenReturn(cliente);
+        Cliente updatedCliente = new Cliente("CL001", "newPassword", true, persona);
+        when(clienteService.updateClient(any(Cliente.class), eq("CL001"))).thenReturn(updatedCliente);
 
-        // Act & Assert
-        mockMvc.perform(put("/api/cliente")
+        mockMvc.perform(put("/api/cliente/CL001")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"clienteId\":\"1\",\"contrasena\":\"password1\",\"estado\":true," +
-                                "\"persona\":{\"identificacion\":\"123456789\",\"nombre\":\"John Doee\",\"genero\":\"Male\"," +
-                                "\"edad\":30,\"direccion\":\"1234 Elm St\",\"telefono\":\"555-1234\"}}"))
+                        .content(objectMapper.writeValueAsString(cliente)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.clienteId").value(cliente.getClienteId()))
-                .andExpect(jsonPath("$.persona.nombre").value("John Doee"));
+                .andExpect(jsonPath("$.clienteId").value("CL001"))
+                .andExpect(jsonPath("$.contrasena").value("newPassword"))
+                .andExpect(jsonPath("$.persona.identificacion").value("123456789"))
+                .andExpect(jsonPath("$.persona.nombre").value("John Doe"));
     }
 
 
@@ -120,7 +118,6 @@ public class ClienteRestControllerTest {
         report.setCuentas(new ArrayList<>());
         when(clienteService.generateReport(clienteId, dates)).thenReturn(report);
 
-
         mockMvc.perform(get("/api/cliente/{clienteid}/reporte", clienteId)
                         .param("fecha", dates[0].toString(), dates[1].toString()))
                 .andExpect(status().isOk())
@@ -129,7 +126,6 @@ public class ClienteRestControllerTest {
 
     @Test
     public void testGetReporte() throws Exception {
-        // Arrange
 
         // Create some example data
         ReportLine line1 = new ReportLine(new Date(), "Deposit", 1000.0, 200.0, 1200.0);
@@ -148,7 +144,6 @@ public class ClienteRestControllerTest {
 
         when(clienteService.generateReport(clienteId, dates)).thenReturn(reporteCliente);
 
-        // Act & Assert
         mockMvc.perform(get("/api/cliente/{clienteid}/reporte", clienteId)
                         .param("fecha", dates[0].toString(), dates[1].toString()))
                 .andExpect(status().isOk())

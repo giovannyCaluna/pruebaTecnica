@@ -49,11 +49,11 @@ public class ReportLine {
         this.finalBalance = finalBalance;
     }
 
-    public ReportLine(Date date,  String type, Double initialBalance, Double movement, Double finalBalance) {
+    public ReportLine(Date date, String type, Double initialBalance, Double movement, Double finalBalance) {
         this.date = date;
-               this.type = type;
+        this.type = type;
         this.initialBalance = initialBalance;
-              this.movement = movement;
+        this.movement = movement;
         this.finalBalance = finalBalance;
     }
 }

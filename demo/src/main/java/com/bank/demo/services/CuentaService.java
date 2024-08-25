@@ -34,10 +34,10 @@ public class CuentaService {
 
     public Cuenta createCuenta(CuentaDTO cuenta) throws Exception {
         Optional<Cliente> cliente = this.clienteRespository.findById(cuenta.getClienteId());
-        Optional<Cuenta> cuentaExistente =  this.cuentasRepository.findById(cuenta.getCuentaid());
+        Optional<Cuenta> cuentaExistente = this.cuentasRepository.findById(cuenta.getCuentaid());
         if (cliente.isPresent()) {
-            if(!cuentaExistente.isPresent()){
-                Cuenta nuevaCuenta = new Cuenta(cuenta.getCuentaid(),cuenta.getTipo(),cuenta.getSaldoInicial(),cuenta.getEstado(),cliente.get());
+            if (!cuentaExistente.isPresent()) {
+                Cuenta nuevaCuenta = new Cuenta(cuenta.getCuentaid(), cuenta.getTipo(), cuenta.getSaldoInicial(), cuenta.getEstado(), cliente.get());
                 nuevaCuenta = this.cuentasRepository.save(nuevaCuenta);
                 Movimiento primerMovimiento = new Movimiento();
                 primerMovimiento.setTipoMovimiento("Deposito");
@@ -48,7 +48,7 @@ public class CuentaService {
                 movimientoService.setPrimerMovimiento(primerMovimiento);
                 return nuevaCuenta;
 
-            }else{
+            } else {
                 throw new CuentaAlreadyCreatedException("Cuenta ya existe.");
             }
 

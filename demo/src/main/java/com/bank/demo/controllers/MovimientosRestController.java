@@ -1,7 +1,6 @@
 package com.bank.demo.controllers;
 
 import com.bank.demo.DTOs.MovimientoDTO;
-import com.bank.demo.models.Movimiento;
 import com.bank.demo.services.MovimientoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,7 +48,7 @@ public class MovimientosRestController {
     }
 
     @PutMapping("/{movimientoid}")
-    public ResponseEntity<?> updateMovimiento(@RequestBody MovimientoDTO movimiento, @PathVariable Long movimientoid) throws Exception{
+    public ResponseEntity<?> updateMovimiento(@RequestBody MovimientoDTO movimiento, @PathVariable Long movimientoid) throws Exception {
         try {
             return new ResponseEntity<>(movimientoService.updateMovimiento(movimiento, movimientoid), HttpStatus.OK);
         } catch (Exception e) {

@@ -29,8 +29,8 @@ public class Cuenta {
     public Cuenta() {
     }
 
-    public Cuenta(String numeroCuenta,String tipoCuenta, Double saldoInicial, Boolean estado,Cliente cliente) {
-        this.numeroCuenta= numeroCuenta;
+    public Cuenta(String numeroCuenta, String tipoCuenta, Double saldoInicial, Boolean estado, Cliente cliente) {
+        this.numeroCuenta = numeroCuenta;
         this.tipoCuenta = tipoCuenta;
         this.saldoInicial = saldoInicial;
         this.estado = estado;
@@ -72,6 +72,7 @@ public class Cuenta {
     public Cliente getCliente() {
         return cliente;
     }
+
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;
     }

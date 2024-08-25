@@ -15,6 +15,7 @@ public class Report {
         this.fechaReporte = fechaReporte;
         this.cuentas = cuentas;
     }
+
     public Report() {
 
     }
