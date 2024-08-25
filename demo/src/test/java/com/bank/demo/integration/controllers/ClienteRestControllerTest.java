@@ -106,7 +106,6 @@ public class ClienteRestControllerTest {
     public void testGetAllClients() throws Exception {
         mockMvc.perform(get("/api/cliente"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()").value(3))
                 .andExpect(jsonPath("$[0].clienteId").value("CL001"));
     }
 

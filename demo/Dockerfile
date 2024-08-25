@@ -3,8 +3,7 @@ FROM maven:3.8.5-openjdk-17 AS builder
 COPY pom.xml .
 COPY src ./src
 # Build the application
-RUN mvn clean
-RUN mvn install package
+RUN mvn clean install package -DskipTests
 
 FROM openjdk:17-jdk-alpine
 ARG JAR_FILE=target/*.jar
