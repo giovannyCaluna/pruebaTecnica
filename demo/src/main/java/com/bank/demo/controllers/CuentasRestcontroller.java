@@ -12,53 +12,54 @@ import org.springframework.web.bind.annotation.*;
 public class CuentasRestcontroller {
     private CuentaService cuentaService;
 
-    public CuentasRestcontroller (CuentaService cuentaService){
+    public CuentasRestcontroller(CuentaService cuentaService) {
         this.cuentaService = cuentaService;
     }
 
     @GetMapping
-    public ResponseEntity<?> getAllcuentas (){
-        try{
+    public ResponseEntity<?> getAllcuentas() {
+        try {
             return new ResponseEntity<>(cuentaService.getAllCuentas(), HttpStatus.OK);
 
-        }catch(Exception e){
+        } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
     @PostMapping
     public ResponseEntity<?> createCuenta(@RequestBody CuentaDTO cuenta) throws Exception, ClienteNotFoundException {
-        try{
+        try {
             return new ResponseEntity<>(cuentaService.createCuenta(cuenta), HttpStatus.CREATED);
-        }catch(Exception e){
+        } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
-    @PutMapping
-    public ResponseEntity<?> updateCuenta(@RequestBody CuentaDTO cuenta) throws Exception{
-        try{
-            return new ResponseEntity<>(cuentaService.updateCuenta(cuenta),HttpStatus.OK);
+    @PutMapping("/{cuentaid}")
+    public ResponseEntity<?> updateCuenta(@RequestBody CuentaDTO cuenta, @PathVariable String cuentaid) throws Exception {
+        try {
+            return new ResponseEntity<>(cuentaService.updateCuenta(cuenta, cuentaid), HttpStatus.OK);
 
-        }catch(Exception e){
-            return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST );
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 
         }
     }
-    @DeleteMapping
-    public ResponseEntity<?> deleteCuenta(@RequestBody CuentaDTO cuenta) throws Exception {
-        try{
-            cuentaService.deleteCuenta(cuenta);
+
+    @DeleteMapping("/{cuentaid}")
+    public ResponseEntity<?> deleteCuenta(@PathVariable String cuentaid) throws Exception {
+        try {
+            cuentaService.deleteCuenta(cuentaid);
             return new ResponseEntity<>(null, HttpStatus.OK);
-        }catch(Exception e){
+        } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-        @ExceptionHandler(ClienteNotFoundException.class)
-        public ResponseEntity<String> handleClienteNotFoundException(ClienteNotFoundException ex) {
-            return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
-        }
+    @ExceptionHandler(ClienteNotFoundException.class)
+    public ResponseEntity<String> handleClienteNotFoundException(ClienteNotFoundException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
 
 
 }

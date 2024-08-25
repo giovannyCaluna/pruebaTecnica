@@ -4,6 +4,7 @@ import com.bank.demo.DTOs.CuentaDTO;
 import com.bank.demo.data.ClienteRespository;
 import com.bank.demo.data.CuentasRepository;
 import com.bank.demo.exceptions.ClienteNotFoundException;
+import com.bank.demo.exceptions.CuentaAlreadyCreatedException;
 import com.bank.demo.models.Cliente;
 import com.bank.demo.models.Cuenta;
 import com.bank.demo.models.Movimiento;
@@ -33,37 +34,42 @@ public class CuentaService {
 
     public Cuenta createCuenta(CuentaDTO cuenta) throws Exception {
         Optional<Cliente> cliente = this.clienteRespository.findById(cuenta.getClienteId());
+        Optional<Cuenta> cuentaExistente =  this.cuentasRepository.findById(cuenta.getCuentaid());
         if (cliente.isPresent()) {
-            Cuenta nuevaCuenta = new Cuenta(cuenta.getCuentaid(),cuenta.getTipo(),cuenta.getSaldoInicial(),cuenta.getEstado(),cliente.get());
-            nuevaCuenta = this.cuentasRepository.save(nuevaCuenta);
-            Movimiento primerMovimiento = new Movimiento();
-            primerMovimiento.setTipoMovimiento("Deposito");
-            primerMovimiento.setCuenta(nuevaCuenta);
-            primerMovimiento.setValor(cuenta.getSaldoInicial());
-            primerMovimiento.setSaldo(cuenta.getSaldoInicial());
-            primerMovimiento.setFecha(new Date());
-            movimientoService.setPrimerMovimiento(primerMovimiento);
-            return nuevaCuenta;
+            if(!cuentaExistente.isPresent()){
+                Cuenta nuevaCuenta = new Cuenta(cuenta.getCuentaid(),cuenta.getTipo(),cuenta.getSaldoInicial(),cuenta.getEstado(),cliente.get());
+                nuevaCuenta = this.cuentasRepository.save(nuevaCuenta);
+                Movimiento primerMovimiento = new Movimiento();
+                primerMovimiento.setTipoMovimiento("Deposito");
+                primerMovimiento.setCuenta(nuevaCuenta);
+                primerMovimiento.setValor(cuenta.getSaldoInicial());
+                primerMovimiento.setSaldo(cuenta.getSaldoInicial());
+                primerMovimiento.setFecha(new Date());
+                movimientoService.setPrimerMovimiento(primerMovimiento);
+                return nuevaCuenta;
+
+            }else{
+                throw new CuentaAlreadyCreatedException("Cuenta ya existe.");
+            }
+
         } else {
-            throw new ClienteNotFoundException("Cliente no encontrado++");
+            throw new ClienteNotFoundException("Cliente no encontrado");
         }
     }
 
-    public Cuenta updateCuenta(CuentaDTO cuenta) throws Exception {
-        Optional<Cuenta> updateCuenta = this.cuentasRepository.findById(cuenta.getCuentaid());
+    public Cuenta updateCuenta(CuentaDTO cuenta, String cuentaid) throws Exception {
+        Optional<Cuenta> updateCuenta = this.cuentasRepository.findById(cuentaid);
         if (updateCuenta.isPresent()) {
             updateCuenta.get().setTipoCuenta(cuenta.getTipo());
-            updateCuenta.get().setSaldoInicial(cuenta.getSaldoInicial());
             updateCuenta.get().setEstado(cuenta.getEstado());
-            updateCuenta.get().setNumeroCuenta(cuenta.getCuentaid());
             return this.cuentasRepository.save(updateCuenta.get());
         } else {
-            throw new Exception("Cliente no encontrado");
+            throw new Exception("Cuenta no encontrada");
         }
     }
 
-    public void deleteCuenta(CuentaDTO cuenta) throws Exception {
-        Optional<Cuenta> removeCuenta = this.cuentasRepository.findById(cuenta.getCuentaid());
+    public void deleteCuenta(String cuentaid) throws Exception {
+        Optional<Cuenta> removeCuenta = this.cuentasRepository.findById(cuentaid);
         if (removeCuenta.isPresent()) {
             this.cuentasRepository.delete(removeCuenta.get());
         } else {

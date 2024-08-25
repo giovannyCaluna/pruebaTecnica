@@ -48,19 +48,19 @@ public class MovimientosRestController {
         }
     }
 
-    @PutMapping
-    public ResponseEntity<?> updateMovimiento(@RequestBody Movimiento movimiento) {
+    @PutMapping("/{movimientoid}")
+    public ResponseEntity<?> updateMovimiento(@RequestBody MovimientoDTO movimiento, @PathVariable Long movimientoid) throws Exception{
         try {
-            return new ResponseEntity<>(movimientoService.updateMovimiento(movimiento), HttpStatus.OK);
+            return new ResponseEntity<>(movimientoService.updateMovimiento(movimiento, movimientoid), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @DeleteMapping
-    public ResponseEntity<?> deleteMovimiento(@RequestBody Movimiento movimiento) {
+    @DeleteMapping("/{movimientoid}")
+    public ResponseEntity<?> deleteMovimiento(@PathVariable Long movimientoid) {
         try {
-            movimientoService.deleteMovimiento(movimiento);
+            movimientoService.deleteMovimiento(movimientoid);
             return new ResponseEntity<>(null, HttpStatus.OK);
         } catch
         (Exception e) {

@@ -31,4 +31,7 @@ public class PersonaService {
             return personaRepository.save(persona);
         }
     }
+    public Optional<Persona> findByIdentificacion(String identificacion) {
+        return this.personaRepository.findById(identificacion);
+    }
 }

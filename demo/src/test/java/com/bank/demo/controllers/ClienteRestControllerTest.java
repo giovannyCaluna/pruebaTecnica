@@ -95,7 +95,7 @@ public class ClienteRestControllerTest {
         Persona persona = new Persona("123456789", "John Doee", "Male", 30, "1234 Elm St", "555-1234");
         Cliente cliente = new Cliente("1", "password1", true, persona);
 
-        when(clienteService.updateClient(Mockito.any(Cliente.class))).thenReturn(cliente);
+        when(clienteService.updateClient(cliente, cliente.getClienteId())).thenReturn(cliente);
 
         // Act & Assert
         mockMvc.perform(put("/api/cliente")

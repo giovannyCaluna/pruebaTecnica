@@ -44,12 +44,20 @@ public class MovimientoService {
         }
     }
 
-    public Movimiento updateMovimiento(Movimiento movimiento) {
-        return this.movimientosRepository.save(movimiento);
+    public Movimiento updateMovimiento(MovimientoDTO movimiento, Long movimientoId) throws Exception {
+        Optional<Movimiento>  prevMovimiento = this.movimientosRepository.findById(movimientoId);
+        if (prevMovimiento.isPresent()) {
+            prevMovimiento.get().setTipoMovimiento(movimiento.getTipoMovimiento());
+            prevMovimiento.get().setFecha(new Date());
+            return this.movimientosRepository.save(prevMovimiento.get());
+        }else{
+            throw  new Exception("No existe el movimiento");
+        }
+
     }
 
-    public void deleteMovimiento(Movimiento movimiento) {
-        this.movimientosRepository.delete(movimiento);
+    public void deleteMovimiento(Long movimiento) {
+        this.movimientosRepository.deleteById(movimiento);
     }
 
     public List<Movimiento> getMovimientosByCuenta(String cuenta) {

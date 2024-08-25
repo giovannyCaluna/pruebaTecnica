@@ -4,9 +4,11 @@ import com.bank.demo.DTOs.CuentaReporte;
 import com.bank.demo.DTOs.Report;
 import com.bank.demo.DTOs.ReportLine;
 import com.bank.demo.data.ClienteRespository;
+import com.bank.demo.exceptions.ClienteNotFoundException;
 import com.bank.demo.models.Cliente;
 import com.bank.demo.models.Cuenta;
 import com.bank.demo.models.Movimiento;
+import com.bank.demo.models.Persona;
 import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
@@ -35,17 +37,37 @@ public class ClienteService {
     }
 
     public Cliente createClient(Cliente cliente) throws Exception {
-        this.personaService.savePersona(cliente.getPersona());
-        return this.clienteRespository.save(cliente);
+        Optional<Cliente> clienteRegistrado = this.clienteRespository.findById(cliente.getClienteId());
+        Optional<Persona> personaRegistrada =  this.personaService.findByIdentificacion(cliente.getPersona().getIdentificacion());
+        if (clienteRegistrado.isPresent() || personaRegistrada.isPresent()) {
+            throw new Exception("El cliente ya existe");
+        }else{
+            this.personaService.savePersona(cliente.getPersona());
+            return this.clienteRespository.save(cliente);
+
+        }
     }
 
-    public Cliente updateClient(Cliente cliente) throws Exception {
-        this.personaService.updatePersona(cliente.getPersona());
-        return this.clienteRespository.save(cliente);
+    public Cliente updateClient(Cliente clienteNuevo, String clienteid) throws Exception {
+        Optional<Cliente> cliente = clienteRespository.findById(clienteid);
+        if (cliente.isPresent()) {
+            cliente.get().setEstado(clienteNuevo.getEstado());
+            cliente.get().setContrasena(clienteNuevo.getContrasena());
+            cliente.get().getPersona().setDireccion(clienteNuevo.getPersona().getDireccion());
+            cliente.get().getPersona().setEdad(clienteNuevo.getPersona().getEdad());
+            cliente.get().getPersona().setGenero(clienteNuevo.getPersona().getGenero());
+            cliente.get().getPersona().setNombre(clienteNuevo.getPersona().getNombre());
+            cliente.get().getPersona().setTelefono(clienteNuevo.getPersona().getTelefono());
+            return this.clienteRespository.save(cliente.get());
+
+        }else{
+            throw new Exception("Cliente no encontrado");
+        }
     }
 
-    public void deleteClient(Cliente cliente) {
-        this.clienteRespository.delete(cliente);
+
+    public void deleteClient(String clienteid) {
+        this.clienteRespository.deleteById(clienteid);
     }
 
     public Optional<Cliente> findById(String clienteid) {
@@ -90,6 +112,8 @@ public class ClienteService {
 
             }
             report.setCuentas(cuentasReporte);
+        }else{
+            throw new ClienteNotFoundException("El cliente no existe");
         }
         return report;
     }
