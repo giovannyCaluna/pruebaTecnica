@@ -1,14 +1,19 @@
 # Use Maven to build the application
-FROM maven:3.8.5-openjdk-17 AS builder
+FROM maven:3.8.7-sapmachine-17 AS builder
+WORKDIR /build
+
+# Copy pom.xml and download dependencies
 COPY pom.xml .
+
+# Copy the source code and build the application
 COPY src ./src
-# Build the application
-RUN mvn clean install package -DskipTests
+RUN mvn clean install package -DskipTests dependency:go-offline
 
+# Use a smaller base image to run the application
 FROM openjdk:17-jdk-alpine
-ARG JAR_FILE=target/*.jar
-COPY ./target/demo-0.0.1-SNAPSHOT.jar app.jar
-ENTRYPOINT ["java","-jar","/app.jar"]
+WORKDIR /app
 
+# Copy the built JAR file from the builder stage
+COPY --from=builder /build/target/demo-0.0.1-SNAPSHOT.jar app.jar
 
-
+ENTRYPOINT ["java", "-jar", "/app/app.jar"]
