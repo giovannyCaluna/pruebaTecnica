@@ -1,10 +1,13 @@
 package com.bank.demo.services;
 
 import com.bank.demo.DTOs.MovimientoDTO;
+import com.bank.demo.services.IStrategies.OperacionCuenta;
 import com.bank.demo.data.CuentasRepository;
 import com.bank.demo.data.MovimientosRepository;
 import com.bank.demo.models.Cuenta;
 import com.bank.demo.models.Movimiento;
+import com.bank.demo.services.Strategies.CreditoStrategy;
+import com.bank.demo.services.Strategies.DebitoStrategy;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -24,15 +27,17 @@ public class MovimientoService {
         return this.movimientosRepository.findAll();
     }
 
-    public Movimiento createMovimiento(MovimientoDTO movimiento) throws Exception {
+    public Movimiento createMovimiento(MovimientoDTO movimiento)
+            throws Exception {
         Optional<Cuenta> cuenta = this.cuentasRepository.findById(movimiento.getNumeroCuenta());
         if (cuenta.isPresent()) {
             Movimiento lastMovimiento = this.movimientosRepository.findFirstByCuenta_NumeroCuentaOrderByFechaDesc(movimiento.getNumeroCuenta());
+            OperacionCuenta operacionCuenta = getOperacion(movimiento.getValor());
             if (validateFunds(lastMovimiento.getSaldo(), movimiento.getValor())) {
                 Movimiento move = new Movimiento();
                 move.setTipoMovimiento(movimiento.getTipoMovimiento());
                 move.setFecha(new Date());
-                move.setSaldo(lastMovimiento.getSaldo() + movimiento.getValor());
+                move.setSaldo(operacionCuenta.ejecutar(lastMovimiento.getSaldo(), movimiento.getValor()));
                 move.setValor(movimiento.getValor());
                 move.setCuenta(cuenta.get());
                 return this.movimientosRepository.save(move);
@@ -42,6 +47,15 @@ public class MovimientoService {
         } else {
             throw new Exception("No existe la cuenta");
         }
+    }
+
+    public OperacionCuenta getOperacion(double monto) {
+        if (monto >= 0) {
+            return new CreditoStrategy();
+        } else {
+            return new DebitoStrategy();
+        }
+
     }
 
     public Movimiento updateMovimiento(MovimientoDTO movimiento, Long movimientoId) throws Exception {
