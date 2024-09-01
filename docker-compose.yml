@@ -36,6 +36,7 @@ services:
       SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.PostgreSQLDialect
       SPRING_JPA_HIBERNATE_DDL_AUTO: none
       CUENTA_API_URL: http://cuentaapp:8081/api/cuenta
+      CUENTA_API_URL: http://cuentaapp:8081/api/movimiento
       SPRING_RABBITMQ_HOST: rabbitmq  # RabbitMQ host name as per the service name
     depends_on:
       - db  # Ensure the database starts before the application

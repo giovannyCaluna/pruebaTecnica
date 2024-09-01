@@ -15,7 +15,6 @@ public class CuentaDTO {
     private String clienteId;
     private List<MovimientoDTO> movimientos;
 
-
     public CuentaDTO() {
     }
 
@@ -27,6 +26,4 @@ public class CuentaDTO {
         this.clienteId = clienteId;
         this.movimientos = movimientos;
     }
-
-
 }

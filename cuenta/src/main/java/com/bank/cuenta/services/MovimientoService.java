@@ -1,6 +1,8 @@
 package com.bank.cuenta.services;
 
 import com.bank.cuenta.DTOs.MovimientoDTO;
+import com.bank.cuenta.DTOs.TransferenciaDTO;
+import com.bank.cuenta.models.Accion;
 import com.bank.cuenta.services.IStrategies.OperacionCuenta;
 import com.bank.cuenta.data.CuentasRepository;
 import com.bank.cuenta.data.MovimientosRepository;
@@ -9,6 +11,8 @@ import com.bank.cuenta.models.Movimiento;
 import com.bank.cuenta.services.Strategies.CreditoStrategy;
 import com.bank.cuenta.services.Strategies.DebitoStrategy;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -17,16 +21,18 @@ public class MovimientoService {
 
     private final MovimientosRepository movimientosRepository;
     private final CuentasRepository cuentasRepository;
+    private final AccionService accionService;
 
-    public MovimientoService(MovimientosRepository movimientosRepository, CuentasRepository cuentasRepository) {
+    public MovimientoService(MovimientosRepository movimientosRepository, CuentasRepository cuentasRepository, AccionService accionService) {
         this.movimientosRepository = movimientosRepository;
         this.cuentasRepository = cuentasRepository;
+        this.accionService = accionService;
     }
 
     public List<Movimiento> getAllMovimientos() {
         return this.movimientosRepository.findAll();
     }
-
+    @Transactional(propagation = Propagation.REQUIRED)
     public Movimiento createMovimiento(MovimientoDTO movimiento)
             throws Exception {
         Optional<Cuenta> cuenta = this.cuentasRepository.findById(movimiento.getNumeroCuenta());
@@ -98,6 +104,31 @@ public class MovimientoService {
 
     public List<Movimiento> findByCuentaAndIntervalo(String id, Date start, Date end) {
         return this.movimientosRepository.findByCuenta_NumeroCuentaAndAndFechaBetweenOrderByFechaDesc(id, start, end);
+
+    }
+
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public List<Movimiento> realizarTransferencia(TransferenciaDTO transferenciaDTO) throws Exception {
+        MovimientoDTO debMovimiento = new MovimientoDTO();
+        MovimientoDTO acredMovimiento = new MovimientoDTO();
+        debMovimiento.setTipoMovimiento("Transferencia");
+        debMovimiento.setFecha(new Date());
+        debMovimiento.setNumeroCuenta(transferenciaDTO.getCuentaOrigen());
+        debMovimiento.setValor(transferenciaDTO.getMonto() * (-1));
+        acredMovimiento.setTipoMovimiento("Transferencia");
+        acredMovimiento.setFecha(new Date());
+        acredMovimiento.setNumeroCuenta(transferenciaDTO.getCuentaDestino());
+        acredMovimiento.setValor(transferenciaDTO.getMonto());
+        List<Movimiento> movimientos = new ArrayList<>();
+        movimientos.add(createMovimiento(debMovimiento));
+        movimientos.add(createMovimiento(acredMovimiento));
+        Accion accion = new Accion();
+        accion.setClienteid(transferenciaDTO.getClienteId());
+        accion.setFecha(new Date());
+        accion.setTipoMovimiento("Transferncia");
+        accionService.create(accion);
+       return movimientos;
 
     }
 }

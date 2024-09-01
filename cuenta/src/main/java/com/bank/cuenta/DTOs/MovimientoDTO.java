@@ -16,7 +16,7 @@ public class MovimientoDTO {
 
     public MovimientoDTO() {
     }
-    public MovimientoDTO(Long id, Date fecha, String tipoMovimiento, Double valor, Double saldo, String numeroCuenta) {
+    public MovimientoDTO(Long id,Date fecha, String tipoMovimiento, Double valor, Double saldo, String numeroCuenta) {
         this.id = id;
         this.fecha = fecha;
         this.tipoMovimiento = tipoMovimiento;

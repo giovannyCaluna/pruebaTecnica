@@ -1,6 +1,7 @@
 package com.bank.cliente.controllers;
 
 import com.bank.cliente.DTOs.MovimientoDTO;
+import com.bank.cliente.DTOs.TransferenciaDTO;
 import com.bank.cliente.services.MovimientoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -63,6 +64,15 @@ public class MovimientosRestController {
         } catch
         (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/transferir")
+    public ResponseEntity<?> transferirMonto(@RequestBody TransferenciaDTO transferenciaDTO) throws Exception {
+        try {
+            return new ResponseEntity<>(movimientoService.realizarTransferencia(transferenciaDTO), HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 

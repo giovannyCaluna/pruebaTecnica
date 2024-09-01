@@ -1,5 +1,13 @@
 -- init.sql
 
+CREATE TABLE Acciones (
+    id SERIAL PRIMARY KEY,
+    fecha TIMESTAMP NOT NULL,
+    clienteid VARCHAR(255) NOT NULL,
+    descripcion VARCHAR(255) NOT NULL
+);
+
+
 -- Create Persona table
 CREATE TABLE Persona (
     identificacion VARCHAR(50) PRIMARY KEY,

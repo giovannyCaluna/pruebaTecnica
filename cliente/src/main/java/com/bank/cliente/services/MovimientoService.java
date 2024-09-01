@@ -1,6 +1,7 @@
 package com.bank.cliente.services;
 
 import com.bank.cliente.DTOs.MovimientoDTO;
+import com.bank.cliente.DTOs.TransferenciaDTO;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -12,7 +13,7 @@ import java.util.List;
 public class MovimientoService {
 
     private final RestTemplate restTemplate;
-    @Value("${cuenta.api.url}")
+    @Value("${movimiento.api.url}")
     private String urlApiCuenta;
     public MovimientoService() {
         this.restTemplate = new RestTemplate();
@@ -42,8 +43,15 @@ public class MovimientoService {
     }
 
     public Object getMovimientosByCuenta(String movimientoId) {
-        ResponseEntity<?> response = restTemplate.getForEntity(urlApiCuenta + "/" + movimientoId, List.class);
+        ResponseEntity<?> response = restTemplate.getForEntity(urlApiCuenta + "/cuenta/" + movimientoId, List.class);
         return response.getBody();
     }
+
+    public Object realizarTransferencia(TransferenciaDTO transferenciaDTO) {
+        ResponseEntity<?> response = restTemplate.postForEntity(urlApiCuenta +"/transferir", transferenciaDTO, List.class);
+        return response.getBody();
+    }
+
+
 
 }
