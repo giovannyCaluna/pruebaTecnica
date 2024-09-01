@@ -70,8 +70,14 @@ public class MovimientoService {
 
     }
 
-    public void deleteMovimiento(Long movimiento) {
-        this.movimientosRepository.deleteById(movimiento);
+    public void deleteMovimiento(Long movimiento) throws Exception {
+        Optional<Movimiento> removeMovimiento = this.movimientosRepository.findById(movimiento);
+
+        if (removeMovimiento.isPresent()) {
+            this.movimientosRepository.delete(removeMovimiento.get());
+        } else {
+            throw new Exception("Movimiento no existe");
+        }
     }
 
     public List<Movimiento> getMovimientosByCuenta(String cuenta) {

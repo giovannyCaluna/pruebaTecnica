@@ -2,10 +2,30 @@ version: '3.7'
 services:
   app:
     build:
-      context: ./demo/  # Path to the directory containing the Dockerfile
+      context: ./cuenta/  
       dockerfile: Dockerfile
-    image: 'demoapp:latest'
-    container_name: demoapp
+    image: 'cuentaapp:latest'
+    container_name: cuentaapp
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/bank-demo
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
+      SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.PostgreSQLDialect
+      SPRING_JPA_HIBERNATE_DDL_AUTO: none
+      SPRING_RABBITMQ_HOST: rabbitmq  
+    depends_on:
+      - db  # Ensure the database starts before the application
+      - rabbitmq  # Ensure RabbitMQ starts before the application
+
+  app2:
+    build:
+      context: ./cliente/ 
+      dockerfile: Dockerfile
+    image: 'clienteapp:latest'
+    container_name: clienteapp
     ports:
       - "8080:8080"
     environment:
@@ -15,8 +35,11 @@ services:
       SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
       SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.PostgreSQLDialect
       SPRING_JPA_HIBERNATE_DDL_AUTO: none
+      CUENTA_API_URL: http://cuentaapp:8081/api/cuenta
+      SPRING_RABBITMQ_HOST: rabbitmq  # RabbitMQ host name as per the service name
     depends_on:
       - db  # Ensure the database starts before the application
+      - rabbitmq  # Ensure RabbitMQ starts before the application
 
   db:
     image: 'postgres:latest'
@@ -29,7 +52,17 @@ services:
       - pgdata:/var/lib/postgresql/data1263  # Correct volume mapping for PostgreSQL data
       - ./SQL:/docker-entrypoint-initdb.d  # Mount initialization scripts
     ports:
-      - "5432:5432" # Exposing the default PostgreSQL port
+      - "5432:5432"  # Exposing the default PostgreSQL port
+
+  rabbitmq:
+    image: 'rabbitmq:management'  # RabbitMQ image with management plugin
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"  # Default RabbitMQ port
+      - "15672:15672"  # Management plugin port
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
 
 volumes:
   pgdata:  # Define the named volume

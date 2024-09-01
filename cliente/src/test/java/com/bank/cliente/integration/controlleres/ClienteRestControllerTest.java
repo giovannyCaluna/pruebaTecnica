@@ -1,9 +1,9 @@
-package com.bank.cuenta.integration.controllers;
+package com.bank.cliente.integration.controlleres;
 
-import com.bank.cuenta.models.Cliente;
-import com.bank.cuenta.models.Persona;
-import com.bank.cuenta.data.ClienteRespository;
-import com.bank.cuenta.data.PersonaRepository;
+import com.bank.cliente.data.ClienteRespository;
+import com.bank.cliente.data.PersonaRepository;
+import com.bank.cliente.models.Cliente;
+import com.bank.cliente.models.Persona;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,7 +19,8 @@ import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-        import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -124,7 +125,6 @@ public class ClienteRestControllerTest {
         clienteTest.setContrasena("55555");
         clienteTest.setEstado(true);
         clienteTest.setPersona(personaTest);
-
 
 
 

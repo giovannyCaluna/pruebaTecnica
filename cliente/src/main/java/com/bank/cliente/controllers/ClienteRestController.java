@@ -58,7 +58,6 @@ public class ClienteRestController {
         }
     }
 
-
     @DeleteMapping("/{clienteid}")
     public ResponseEntity<?> deleteClient(@PathVariable String clienteid) {
         try {

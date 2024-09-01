@@ -1,12 +1,12 @@
-package com.bank.cuenta.unit.controllers;
+package com.bank.cliente.unit.controllers;
 
-import com.bank.cuenta.DTOs.CuentaReporte;
-import com.bank.cuenta.DTOs.Report;
-import com.bank.cuenta.DTOs.ReportLine;
-import com.bank.cuenta.controllers.ClienteRestController;
-import com.bank.cuenta.models.Cliente;
-import com.bank.cuenta.models.Persona;
-import com.bank.cuenta.services.ClienteService;
+import com.bank.cliente.DTOs.CuentaReporte;
+import com.bank.cliente.DTOs.Report;
+import com.bank.cliente.DTOs.ReportLine;
+import com.bank.cliente.controllers.ClienteRestController;
+import com.bank.cliente.models.Cliente;
+import com.bank.cliente.models.Persona;
+import com.bank.cliente.services.ClienteService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
