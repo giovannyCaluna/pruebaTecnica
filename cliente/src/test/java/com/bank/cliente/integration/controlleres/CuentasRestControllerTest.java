@@ -56,21 +56,14 @@ public class CuentasRestControllerTest {
                        ); // Mocked response
 
         Object m2Response = cuentaService.getAllCuentas();
-
-        //mockServer.verify();
         assertThat(m2Response).isNotNull();
-//        assertThat(m2Response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        // Additional assertions based on what process should return
+
     }
-
-
 
     @Test
     public void whenM1ServiceIsCalled_thenM2ServiceShouldProcessResponse() {
-        // Assuming M1 service is running locally or use MockRestServiceServer for a mock
-        ResponseEntity  responseEntity = new RestTemplate().getForEntity(urlApiCuenta, List.class);
+        ResponseEntity responseEntity = new RestTemplate().getForEntity(urlApiCuenta, List.class);
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(responseEntity.getBody()).isNotNull();
-        // Further assertions on m2Response based on expected behavior
     }
 }

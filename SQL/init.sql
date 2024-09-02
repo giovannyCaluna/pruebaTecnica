@@ -27,13 +27,15 @@ CREATE TABLE Cliente (
     FOREIGN KEY (identificacion) REFERENCES Persona(identificacion) ON DELETE CASCADE
 );
 
--- Create Cuenta table
-CREATE TABLE Cuenta (
-    numero_cuenta  VARCHAR(50) PRIMARY KEY,
-    tipo_cuenta VARCHAR(50) NOT NULL,
+
+CREATE TABLE cuenta (
+    numero_cuenta VARCHAR(255) PRIMARY KEY,
     saldo_inicial NUMERIC(15, 2) NOT NULL,
     estado BOOLEAN NOT NULL,
     clienteid VARCHAR(50) NOT NULL,
+    tipo_cuenta VARCHAR(255) NOT NULL,
+    monto_descubierto NUMERIC(15, 2),   -- Solo para CuentaCorriente
+    interes NUMERIC(15, 2),-- Solo para CuentaAhorros
     FOREIGN KEY(clienteid) references Cliente(clienteid) ON DELETE CASCADE
 );
 
@@ -66,11 +68,11 @@ INSERT INTO Cliente (clienteid, contrasena, estado, identificacion) VALUES
 
 -- Insert data into Cuenta table
 INSERT INTO Cuenta (numero_cuenta, tipo_cuenta, saldo_inicial, estado, clienteid) VALUES
-('478758', 'Ahorro', 2000.00, 'TRUE', 'CL001'),  -- Jose Lema
-('225487','Corriente', 100.00, 'TRUE', 'CL002'), -- Marianela Montalvo
-('495878','Ahorros', 0.00, 'TRUE', 'CL003'), -- Juan Osorio
-('496825', 'Ahorros', 540.00, 'TRUE', 'CL002'), -- Marianela Montalvo
-('585545','Corriente', 1000.00, 'TRUE', 'CL001'); -- Jose Lema
+('478758', 'AHORROS', 2000.00, 'TRUE', 'CL001'),  -- Jose Lema
+('225487','CORRIENTE', 100.00, 'TRUE', 'CL002'), -- Marianela Montalvo
+('495878','AHORROS', 0.00, 'TRUE', 'CL003'), -- Juan Osorio
+('496825', 'AHORROS', 540.00, 'TRUE', 'CL002'), -- Marianela Montalvo
+('585545','CORRIENTE', 1000.00, 'TRUE', 'CL001'); -- Jose Lema
 
 
 

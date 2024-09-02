@@ -50,7 +50,11 @@ public class RequestCuentaListener {
                         .map(DtoConverter::convertToMovimientoDto)
                         .collect(Collectors.toList());
                 // Convierte la cuenta a CuentaDTO y asocia los movimientosDTO
-                return DtoConverter.convertToCuentaDto(cuenta, movimientosDto);
+                try {
+                    return DtoConverter.convertToCuentaDto(cuenta, movimientosDto);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
             }).collect(Collectors.toList());
             LOG.info(mapper.writeValueAsString(cuentaDTOs));
             return mapper.writeValueAsString(cuentaDTOs);

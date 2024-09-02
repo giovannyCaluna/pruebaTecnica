@@ -1,13 +1,13 @@
 package com.bank.cuenta.services;
 
+
 import com.bank.cuenta.DTOs.CuentaDTO;
 import com.bank.cuenta.data.ClienteRespository;
 import com.bank.cuenta.data.CuentasRepository;
 import com.bank.cuenta.exceptions.ClienteNotFoundException;
 import com.bank.cuenta.exceptions.CuentaAlreadyCreatedException;
-import com.bank.cuenta.models.Cliente;
-import com.bank.cuenta.models.Cuenta;
-import com.bank.cuenta.models.Movimiento;
+import com.bank.cuenta.exceptions.CuentaNotFoundException;
+import com.bank.cuenta.models.*;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -32,22 +32,36 @@ public class CuentaService {
         return this.cuentasRepository.findAll();
     }
 
-    public Cuenta createCuenta(CuentaDTO cuenta) throws Exception {
-        Optional<Cliente> cliente = this.clienteRespository.findById(cuenta.getClienteId());
-        Optional<Cuenta> cuentaExistente = this.cuentasRepository.findById(cuenta.getNumeroCuenta());
+    public Cuenta createCuenta(CuentaDTO cuentaDTO) throws Exception {
+        Optional<Cliente> cliente = this.clienteRespository.findById(cuentaDTO.getClienteId());
+        Optional<Cuenta> cuentaExistente = this.cuentasRepository.findById(cuentaDTO.getNumeroCuenta());
         if (cliente.isPresent()) {
             if (cuentaExistente.isEmpty()) {
-                Cuenta nuevaCuenta = new Cuenta(cuenta.getNumeroCuenta(), cuenta.getTipoCuenta(), cuenta.getSaldoInicial(), cuenta.getEstado(), cliente.get());
+                Cuenta nuevaCuenta;
+                if ("CORRIENTE".equalsIgnoreCase(cuentaDTO.getTipoCuenta())) {
+                    CuentaCorriente cuentaCorriente = new CuentaCorriente();
+                    cuentaCorriente.setMontoDescubierto(0.0);
+                    nuevaCuenta = cuentaCorriente;
+                } else if ("AHORROS".equalsIgnoreCase(cuentaDTO.getTipoCuenta())) {
+                    CuentaAhorros cuentaAhorros = new CuentaAhorros();
+                    cuentaAhorros.setInteres(0.0);
+                    nuevaCuenta = cuentaAhorros;
+                } else {
+                    throw new Exception("Tipo de cuenta no soportado");
+                }
+                nuevaCuenta.setNumeroCuenta(cuentaDTO.getNumeroCuenta());
+                nuevaCuenta.setSaldoInicial(cuentaDTO.getSaldoInicial());
+                nuevaCuenta.setEstado(cuentaDTO.getEstado());
+                nuevaCuenta.setCliente(cliente.get());
                 nuevaCuenta = this.cuentasRepository.save(nuevaCuenta);
                 Movimiento primerMovimiento = new Movimiento();
                 primerMovimiento.setTipoMovimiento("Deposito");
                 primerMovimiento.setCuenta(nuevaCuenta);
-                primerMovimiento.setValor(cuenta.getSaldoInicial());
-                primerMovimiento.setSaldo(cuenta.getSaldoInicial());
+                primerMovimiento.setValor(cuentaDTO.getSaldoInicial());
+                primerMovimiento.setSaldo(cuentaDTO.getSaldoInicial());
                 primerMovimiento.setFecha(new Date());
                 movimientoService.setPrimerMovimiento(primerMovimiento);
                 return nuevaCuenta;
-
             } else {
                 throw new CuentaAlreadyCreatedException("Cuenta ya existe.");
             }
@@ -57,14 +71,13 @@ public class CuentaService {
         }
     }
 
-    public Cuenta updateCuenta(CuentaDTO cuenta, String cuentaid) throws Exception {
-        Optional<Cuenta> updateCuenta = this.cuentasRepository.findById(cuentaid);
-        if (updateCuenta.isPresent()) {
-            updateCuenta.get().setTipoCuenta(cuenta.getTipoCuenta());
-            updateCuenta.get().setEstado(cuenta.getEstado());
-            return this.cuentasRepository.save(updateCuenta.get());
+    public Cuenta updateCuenta(CuentaDTO cuentaDTO, String cuentaid) throws Exception {
+        Optional<Cuenta> cuentaExistente = this.cuentasRepository.findById(cuentaid);
+        if (cuentaExistente.isPresent()) {
+            cuentaExistente.get().setEstado(cuentaDTO.getEstado());
+            return this.cuentasRepository.save(cuentaExistente.get());
         } else {
-            throw new Exception("Cuenta no encontrada");
+            throw new CuentaNotFoundException("Cuenta no encontrada");
         }
     }
 
@@ -73,7 +86,7 @@ public class CuentaService {
         if (removeCuenta.isPresent()) {
             this.cuentasRepository.delete(removeCuenta.get());
         } else {
-            throw new Exception("Cuenta no existe");
+            throw new CuentaNotFoundException("Cuenta no existe");
         }
     }
 
@@ -84,6 +97,5 @@ public class CuentaService {
     public Optional<Cuenta> findById(String id) {
         return this.cuentasRepository.findById(id);
     }
-
 
 }
