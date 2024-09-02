@@ -37,7 +37,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": " {\n        \"clienteId\": \"CL004\",\n        \"contrasena\": \"1234\",\n        \"estado\": true,\n        \"persona\": {\n            \"identificacion\": \"ID001\",\n            \"nombre\": \"Jose Lema\",\n            \"genero\": \"M\",\n            \"edad\": 35,\n            \"direccion\": \"Otavalo sn y principal\",\n            \"telefono\": \"098254785\"\n        }\n    }",
+							"raw": " {\n        \"clienteId\": \"CL009\",\n        \"contrasena\": \"1234\",\n        \"estado\": true,\n        \"persona\": {\n            \"identificacion\": \"ID008\",\n            \"nombre\": \"Jose Lema\",\n            \"genero\": \"M\",\n            \"edad\": 35,\n            \"direccion\": \"Otavalo sn y principal\",\n            \"telefono\": \"098254785\"\n        }\n    }",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -151,7 +151,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"tipoCuenta\": \"AHORROS\",\n    \"saldoInicial\":1000,\n    \"estado\": true,\n    \"clienteId\": \"CL001\",\n    \"numeroCuenta\":\"123456\"\n}",
+							"raw": "{\n    \"tipoCuenta\": \"AHORROS\",\n    \"saldoInicial\":1000,\n    \"estado\": true,\n    \"clienteId\": \"CL001\",\n    \"numeroCuenta\":\"654123\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -180,7 +180,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"estado\": false\n}",
+							"raw": "{\n    \"numeroCuenta\": \"123456\",\n    \"saldoInicial\": 1000.0,\n    \"estado\": false,\n    \"clienteId\": \"CL001\",\n    \"interes\": 0.0,\n    \"tipoCuenta\":\"AHORROS\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -188,7 +188,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/cuenta/478758",
+							"raw": "http://localhost:8080/api/cuenta/123456",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -197,7 +197,7 @@
 							"path": [
 								"api",
 								"cuenta",
-								"478758"
+								"123456"
 							]
 						}
 					},
@@ -218,7 +218,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/cuenta/4958788",
+							"raw": "http://localhost:8080/api/cuenta/495878",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -227,7 +227,7 @@
 							"path": [
 								"api",
 								"cuenta",
-								"4958788"
+								"495878"
 							]
 						}
 					},
@@ -299,7 +299,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"tipoMovimiento\": \"Retiro\",\n    \"valor\":-5.00,\n    \"numeroCuenta\": \"585545\"\n}\n",
+							"raw": "{\n    \"tipoMovimiento\": \"Retiro\",\n    \"valor\":-5.00,\n    \"numeroCuenta\": \"585545\",\n    \"saldo\":0,\n    \"id\":\"0\"\n}\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -328,7 +328,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"tipoMovimiento\": \"Retiro\"\n}",
+							"raw": "{\n    \"tipoMovimiento\": \"Retiro\",\n    \"saldo\":0,\n    \"numeroCuenta\":\"123456\",\n    \"valor\":\"0\",\n    \"id\":5\n\n}\n\n\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -336,7 +336,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/movimiento/14",
+							"raw": "http://localhost:8080/api/movimiento/11",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -345,7 +345,7 @@
 							"path": [
 								"api",
 								"movimiento",
-								"14"
+								"11"
 							]
 						}
 					},
@@ -357,7 +357,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/api/movimiento/14",
+							"raw": "http://localhost:8080/api/movimiento/5",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -366,7 +366,7 @@
 							"path": [
 								"api",
 								"movimiento",
-								"14"
+								"5"
 							]
 						}
 					},
@@ -379,7 +379,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"cuentaOrigen\":\"585545\",\n    \"cuentaDestino\":\"478752\",\n    \"monto\":50,\n    \"clienteId\":\"CL001\"\n}",
+							"raw": "{\n    \"cuentaOrigen\":\"478758\",\n    \"cuentaDestino\":\"478758\",\n    \"monto\":50,\n    \"clienteId\":\"CL001\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
