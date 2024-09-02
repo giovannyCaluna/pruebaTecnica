@@ -74,7 +74,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/cliente/CL002",
+							"raw": "http://localhost:8080/api/cliente/CL001",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -83,7 +83,7 @@
 							"path": [
 								"api",
 								"cliente",
-								"CL002"
+								"CL001"
 							]
 						}
 					},
@@ -151,7 +151,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"tipo\": \"Corriente\",\n    \"saldoInicial\":1000,\n    \"estado\": true,\n    \"clienteId\": \"CL00188\",\n    \"cuentaid\":\"495878\"\n\n}",
+							"raw": "{\n    \"tipoCuenta\": \"AHORROS\",\n    \"saldoInicial\":1000,\n    \"estado\": true,\n    \"clienteId\": \"CL001\",\n    \"numeroCuenta\":\"123456\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -180,7 +180,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"tipo\": \"Corriente\",\n    \"estado\": true\n}",
+							"raw": "{\n    \"estado\": false\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -218,7 +218,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/cuenta/478758",
+							"raw": "http://localhost:8080/api/cuenta/4958788",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -227,7 +227,7 @@
 							"path": [
 								"api",
 								"cuenta",
-								"478758"
+								"4958788"
 							]
 						}
 					},
@@ -276,7 +276,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/api/movimiento/cuenta/9",
+							"raw": "http://localhost:8080/api/movimiento/cuenta/478758",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -286,7 +286,7 @@
 								"api",
 								"movimiento",
 								"cuenta",
-								"9"
+								"478758"
 							]
 						}
 					},
@@ -299,7 +299,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"tipoMovimiento\": \"Retiro\",\n    \"valor\":-5.00,\n    \"numeroCuenta\": \"1235\"\n}\n",
+							"raw": "{\n    \"tipoMovimiento\": \"Retiro\",\n    \"valor\":-5.00,\n    \"numeroCuenta\": \"585545\"\n}\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -328,7 +328,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"tipoMovimiento\": \"Deposito\"\n\n}",
+							"raw": "{\n    \"tipoMovimiento\": \"Retiro\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -336,7 +336,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/movimiento/19",
+							"raw": "http://localhost:8080/api/movimiento/14",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -345,7 +345,7 @@
 							"path": [
 								"api",
 								"movimiento",
-								"19"
+								"14"
 							]
 						}
 					},
@@ -357,28 +357,29 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/transactions/702",
+							"raw": "http://localhost:8080/api/movimiento/14",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"transactions",
-								"702"
+								"api",
+								"movimiento",
+								"14"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "movimiento",
+					"name": "transferencia",
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"date\": \"1931185345\",\n    \"type\": \"withdraw\",\n    \"value\":-575.0,\n    \"account\": {\n        \"accountId\": 302\n    }\n}",
+							"raw": "{\n    \"cuentaOrigen\":\"585545\",\n    \"cuentaDestino\":\"478752\",\n    \"monto\":50,\n    \"clienteId\":\"CL001\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -386,14 +387,16 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/movimiento",
+							"raw": "http://localhost:8080/api/movimiento/transferir",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"movimiento"
+								"api",
+								"movimiento",
+								"transferir"
 							]
 						}
 					},
