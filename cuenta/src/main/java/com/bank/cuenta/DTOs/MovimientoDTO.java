@@ -8,7 +8,6 @@ import lombok.Data;
 import java.util.Date;
 @Data
 public class MovimientoDTO {
-    @NotNull(message = "El id no puede ser nulo")
     private Long id;
     private Date fecha;
     private String tipoMovimiento;
