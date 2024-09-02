@@ -1,8 +1,14 @@
 package com.bank.cliente.DTOs;
 
-import java.util.List;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+import lombok.Data;
 
+import java.util.List;
+@Data
 public class CuentaReporte {
+    @NotBlank(message = "El número de cuenta no puede estar en blanco")
+    @Size(min = 6, max = 6, message = "El número de cuenta debe tener exactamente 6 caracteres")
     private String numeroCuenta;
     private String tipo;
     private Boolean state;
@@ -19,35 +25,5 @@ public class CuentaReporte {
         this.lineas = lineas;
     }
 
-    public String getNumeroCuenta() {
-        return numeroCuenta;
-    }
 
-    public void setNumeroCuenta(String numeroCuenta) {
-        this.numeroCuenta = numeroCuenta;
-    }
-
-    public String getTipo() {
-        return tipo;
-    }
-
-    public void setTypo(String typo) {
-        this.tipo = typo;
-    }
-
-    public Boolean getState() {
-        return state;
-    }
-
-    public void setState(Boolean state) {
-        this.state = state;
-    }
-
-    public List<ReportLine> getLineas() {
-        return lineas;
-    }
-
-    public void setLineas(List<ReportLine> lineas) {
-        this.lineas = lineas;
-    }
 }

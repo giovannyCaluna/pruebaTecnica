@@ -20,7 +20,6 @@ public class Accion {
     @Column(name = "clienteId", nullable = false)
     private String clienteId;
 
-
     @Column(name = "descripcion", nullable = false)
     private String tipoMovimiento;
 

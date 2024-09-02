@@ -1,10 +1,12 @@
 package com.bank.cliente.models;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 
 @Entity
 @Table(name = "Cliente")
+@Data
 public class Cliente {
 
     @Id
@@ -32,37 +34,4 @@ public class Cliente {
         this.persona = persona;
     }
 
-    // Getters and Setters
-
-    public String getClienteId() {
-        return clienteId;
-    }
-
-    public void setClienteId(String clienteId) {
-        this.clienteId = clienteId;
-    }
-
-    public String getContrasena() {
-        return contrasena;
-    }
-
-    public void setContrasena(String contrasena) {
-        this.contrasena = contrasena;
-    }
-
-    public Boolean getEstado() {
-        return estado;
-    }
-
-    public void setEstado(Boolean estado) {
-        this.estado = estado;
-    }
-
-    public Persona getPersona() {
-        return persona;
-    }
-
-    public void setPersona(Persona persona) {
-        this.persona = persona;
-    }
 }

@@ -3,6 +3,7 @@ package com.bank.cuenta.controllers;
 import com.bank.cuenta.DTOs.CuentaDTO;
 import com.bank.cuenta.exceptions.ClienteNotFoundException;
 import com.bank.cuenta.services.CuentaService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +28,7 @@ public class CuentasRestcontroller {
     }
 
     @PostMapping
-    public ResponseEntity<?> createCuenta(@RequestBody CuentaDTO cuenta) throws Exception, ClienteNotFoundException {
+    public ResponseEntity<?> createCuenta(@Valid @RequestBody CuentaDTO cuenta) throws Exception, ClienteNotFoundException {
         try {
             return new ResponseEntity<>(cuentaService.createCuenta(cuenta), HttpStatus.CREATED);
         } catch (Exception e) {
@@ -36,7 +37,7 @@ public class CuentasRestcontroller {
     }
 
     @PutMapping("/{cuentaid}")
-    public ResponseEntity<?> updateCuenta(@RequestBody CuentaDTO cuenta, @PathVariable String cuentaid) throws Exception {
+    public ResponseEntity<?> updateCuenta(@Valid @RequestBody CuentaDTO cuenta, @PathVariable String cuentaid) throws Exception {
         try {
             return new ResponseEntity<>(cuentaService.updateCuenta(cuenta, cuentaid), HttpStatus.OK);
 

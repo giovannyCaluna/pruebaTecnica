@@ -116,7 +116,6 @@ public class ClienteService {
             for (CuentaDTO cuenta : cuentas) {
                 CuentaReporte cuentaReporte = new CuentaReporte();
                 cuentaReporte.setNumeroCuenta(cuenta.getNumeroCuenta());
-                cuentaReporte.setTypo(cuenta.getTipoCuenta());
                 cuentaReporte.setState(cuenta.getEstado());
                 List<ReportLine> reportLines = new ArrayList<>();
                 List<MovimientoDTO> movimientos = cuenta.getMovimientos();

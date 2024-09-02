@@ -2,6 +2,7 @@ package com.bank.cliente.controllers;
 
 import com.bank.cliente.DTOs.CuentaDTO;
 import com.bank.cliente.services.CuentaService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +27,7 @@ public class CuentasRestcontroller {
     }
 
     @PostMapping
-    public ResponseEntity<?> createCuenta(@RequestBody CuentaDTO cuenta)  {
+    public ResponseEntity<?> createCuenta(@Valid @RequestBody CuentaDTO cuenta) {
         try {
             return new ResponseEntity<>(cuentaService.createCuenta(cuenta), HttpStatus.CREATED);
         } catch (Exception e) {
@@ -35,7 +36,7 @@ public class CuentasRestcontroller {
     }
 
     @PutMapping("/{cuentaid}")
-    public ResponseEntity<?> updateCuenta(@RequestBody CuentaDTO cuenta, @PathVariable String cuentaid)  {
+    public ResponseEntity<?> updateCuenta(@Valid @RequestBody CuentaDTO cuenta, @PathVariable String cuentaid) {
         try {
             return new ResponseEntity<>(cuentaService.updateCuenta(cuenta, cuentaid), HttpStatus.OK);
         } catch (Exception e) {

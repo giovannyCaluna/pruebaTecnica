@@ -3,6 +3,7 @@ package com.bank.cuenta.controllers;
 import com.bank.cuenta.DTOs.MovimientoDTO;
 import com.bank.cuenta.DTOs.TransferenciaDTO;
 import com.bank.cuenta.services.MovimientoService;
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -40,7 +41,7 @@ public class MovimientosRestController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createmovimiento(@RequestBody MovimientoDTO movimiento) throws Exception {
+    public ResponseEntity<?> createmovimiento(@Valid @RequestBody MovimientoDTO movimiento) throws Exception {
         try {
             return new ResponseEntity<>(movimientoService.createMovimiento(movimiento), HttpStatus.CREATED);
         } catch (Exception e) {
@@ -49,7 +50,7 @@ public class MovimientosRestController {
     }
 
     @PutMapping("/{movimientoid}")
-    public ResponseEntity<?> updateMovimiento(@RequestBody MovimientoDTO movimiento, @PathVariable Long movimientoid) throws Exception {
+    public ResponseEntity<?> updateMovimiento(@Valid MovimientoDTO movimiento, @PathVariable Long movimientoid) throws Exception {
         try {
             return new ResponseEntity<>(movimientoService.updateMovimiento(movimiento, movimientoid), HttpStatus.OK);
         } catch (Exception e) {
@@ -67,8 +68,9 @@ public class MovimientosRestController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
     @PostMapping("/transferir")
-    public ResponseEntity<?> transferirMonto(@RequestBody TransferenciaDTO transferenciaDTO) throws Exception {
+    public ResponseEntity<?> transferirMonto(@Valid @RequestBody TransferenciaDTO transferenciaDTO) throws Exception {
         try {
             return new ResponseEntity<>(movimientoService.realizarTransferencia(transferenciaDTO), HttpStatus.CREATED);
         } catch (Exception e) {

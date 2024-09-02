@@ -24,18 +24,18 @@ public class CuentaService {
         return response.getBody();
     }
 
-    public Object createCuenta(CuentaDTO cuenta) throws Exception {
+    public Object createCuenta(CuentaDTO cuenta) {
         ResponseEntity<?> response = restTemplate.postForEntity(urlApiCuenta, cuenta, Object.class);
         return response.getBody();
     }
 
-    public String updateCuenta(CuentaDTO cuenta, String cuentaid) throws Exception {
+    public String updateCuenta(CuentaDTO cuenta, String cuentaid) {
         String m1Url = urlApiCuenta + "/" + cuentaid;
         restTemplate.put(m1Url, cuenta);
         return "Cuenta actualizada";
     }
 
-    public String deleteCuenta(String cuentaid) throws Exception {
+    public String deleteCuenta(String cuentaid)  {
         String m1Url = urlApiCuenta + "/" + cuentaid;
         restTemplate.delete(m1Url);
         return "Cuenta Eliminada";
