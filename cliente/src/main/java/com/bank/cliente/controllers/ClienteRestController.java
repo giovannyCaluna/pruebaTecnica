@@ -1,5 +1,6 @@
 package com.bank.cliente.controllers;
 
+import com.bank.cliente.DTOs.PersonaClienteDTO;
 import com.bank.cliente.models.Cliente;
 import com.bank.cliente.services.ClienteService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -66,6 +67,11 @@ public class ClienteRestController {
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @GetMapping("/personaCliente")
+    public ResponseEntity<List<PersonaClienteDTO>> getPersonaCliente() {
+        return new ResponseEntity<>(clienteService.getPersonaCliente(), HttpStatus.OK);
     }
 
 }

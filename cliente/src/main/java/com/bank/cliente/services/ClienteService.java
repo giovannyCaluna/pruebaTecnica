@@ -137,4 +137,8 @@ public class ClienteService {
         }
         return cuentasReporte;
     }
+
+    public List<PersonaClienteDTO> getPersonaCliente(){
+        return this.clienteRespository.findPersonaClienteDetails();
+    }
 }
