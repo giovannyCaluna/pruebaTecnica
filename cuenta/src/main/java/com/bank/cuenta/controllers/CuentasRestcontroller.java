@@ -1,6 +1,7 @@
 package com.bank.cuenta.controllers;
 
 import com.bank.cuenta.DTOs.CuentaDTO;
+import com.bank.cuenta.DTOs.CuentaUpdateDTO;
 import com.bank.cuenta.exceptions.ClienteNotFoundException;
 import com.bank.cuenta.services.CuentaService;
 import jakarta.validation.Valid;
@@ -37,7 +38,7 @@ public class CuentasRestcontroller {
     }
 
     @PutMapping("/{cuentaid}")
-    public ResponseEntity<?> updateCuenta(@Valid @RequestBody CuentaDTO cuenta, @PathVariable String cuentaid) throws Exception {
+    public ResponseEntity<?> updateCuenta(@Valid @RequestBody CuentaUpdateDTO cuenta, @PathVariable String cuentaid) throws Exception {
         try {
             return new ResponseEntity<>(cuentaService.updateCuenta(cuenta, cuentaid), HttpStatus.OK);
 

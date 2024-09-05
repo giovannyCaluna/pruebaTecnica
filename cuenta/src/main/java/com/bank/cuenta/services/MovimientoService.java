@@ -1,7 +1,9 @@
 package com.bank.cuenta.services;
 
+import com.bank.cuenta.DTOs.CrearMovimientoDTO;
 import com.bank.cuenta.DTOs.MovimientoDTO;
 import com.bank.cuenta.DTOs.TransferenciaDTO;
+import com.bank.cuenta.DTOs.UpdateMovimientoDTO;
 import com.bank.cuenta.exceptions.CuentaNotFoundException;
 import com.bank.cuenta.exceptions.MovimientoNotFoundException;
 import com.bank.cuenta.exceptions.SaldoInsuficienteException;
@@ -39,7 +41,7 @@ public class MovimientoService {
         return this.movimientosRepository.findAll();
     }
     @Transactional(propagation = Propagation.REQUIRED)
-    public Movimiento createMovimiento(MovimientoDTO movimiento)
+    public Movimiento createMovimiento(CrearMovimientoDTO movimiento)
             throws SaldoInsuficienteException, CuentaNotFoundException {
         Optional<Cuenta> cuenta = this.cuentasRepository.findById(movimiento.getNumeroCuenta());
         if (cuenta.isPresent()) {
@@ -70,11 +72,10 @@ public class MovimientoService {
 
     }
 
-    public Movimiento updateMovimiento(MovimientoDTO movimiento, Long movimientoId) throws MovimientoNotFoundException {
+    public Movimiento updateMovimiento(UpdateMovimientoDTO uppdateMovimiento, Long movimientoId) throws MovimientoNotFoundException {
         Optional<Movimiento> prevMovimiento = this.movimientosRepository.findById(movimientoId);
         if (prevMovimiento.isPresent()) {
-            prevMovimiento.get().setTipoMovimiento(movimiento.getTipoMovimiento());
-            prevMovimiento.get().setFecha(new Date());
+           prevMovimiento.get().setTipoMovimiento(uppdateMovimiento.getTipoMovimiento());
             return this.movimientosRepository.save(prevMovimiento.get());
         } else {
             throw new MovimientoNotFoundException("No existe el movimiento");
@@ -112,14 +113,12 @@ public class MovimientoService {
     @Transactional(propagation = Propagation.REQUIRED)
     public List<Movimiento> realizarTransferencia(TransferenciaDTO transferenciaDTO)  {
         try{
-            MovimientoDTO debMovimiento = new MovimientoDTO();
-            MovimientoDTO acredMovimiento = new MovimientoDTO();
+            CrearMovimientoDTO debMovimiento = new CrearMovimientoDTO();
+            CrearMovimientoDTO acredMovimiento = new CrearMovimientoDTO();
             debMovimiento.setTipoMovimiento("Transferencia");
-            debMovimiento.setFecha(new Date());
             debMovimiento.setNumeroCuenta(transferenciaDTO.getCuentaOrigen());
             debMovimiento.setValor(transferenciaDTO.getMonto() * (-1));
             acredMovimiento.setTipoMovimiento("Transferencia");
-            acredMovimiento.setFecha(new Date());
             acredMovimiento.setNumeroCuenta(transferenciaDTO.getCuentaDestino());
             acredMovimiento.setValor(transferenciaDTO.getMonto());
             List<Movimiento> movimientos = new ArrayList<>();

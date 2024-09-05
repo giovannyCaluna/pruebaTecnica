@@ -8,6 +8,7 @@ import static org.mockito.Mockito.*;
 import java.util.Date;
 import java.util.Optional;
 
+import com.bank.cuenta.DTOs.CrearMovimientoDTO;
 import com.bank.cuenta.DTOs.MovimientoDTO;
 import com.bank.cuenta.data.CuentasRepository;
 import com.bank.cuenta.data.MovimientosRepository;
@@ -36,14 +37,14 @@ class MovimientoServiceTest {
     @InjectMocks
     private MovimientoService movimientoService;
 
-    private MovimientoDTO movimientoDTO;
+    private CrearMovimientoDTO movimientoDTO;
     private Cuenta cuenta;
     private Movimiento lastMovimiento;
     private Movimiento newMovimiento;
 
     @BeforeEach
     void setUp() {
-        movimientoDTO = new MovimientoDTO();
+        movimientoDTO = new CrearMovimientoDTO();
         movimientoDTO.setNumeroCuenta("123456");
         movimientoDTO.setValor(500.0);
         movimientoDTO.setTipoMovimiento("Transferencia");
@@ -68,7 +69,7 @@ class MovimientoServiceTest {
         // Given
         String numeroCuenta = "123456";
         double valor = 100.0;
-        MovimientoDTO movimientoDTO = new MovimientoDTO();
+        CrearMovimientoDTO movimientoDTO = new CrearMovimientoDTO();
         movimientoDTO.setNumeroCuenta(numeroCuenta);
         movimientoDTO.setValor(valor);
         movimientoDTO.setTipoMovimiento("Transferencia");

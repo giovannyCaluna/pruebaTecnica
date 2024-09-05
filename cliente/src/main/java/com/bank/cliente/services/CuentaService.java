@@ -1,6 +1,7 @@
 package com.bank.cliente.services;
 
 import com.bank.cliente.DTOs.CuentaDTO;
+import com.bank.cliente.DTOs.CuentaUpdateDTO;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -29,7 +30,7 @@ public class CuentaService {
         return response.getBody();
     }
 
-    public String updateCuenta(CuentaDTO cuenta, String cuentaid) {
+    public String updateCuenta(CuentaUpdateDTO cuenta, String cuentaid) {
         String m1Url = urlApiCuenta + "/" + cuentaid;
         restTemplate.put(m1Url, cuenta);
         return "Cuenta actualizada";

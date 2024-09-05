@@ -1,7 +1,8 @@
 package com.bank.cliente.controllers;
 
-import com.bank.cliente.DTOs.MovimientoDTO;
+import com.bank.cliente.DTOs.CrearMovimientoDTO;
 import com.bank.cliente.DTOs.TransferenciaDTO;
+import com.bank.cliente.DTOs.UpdateMovimientoDTO;
 import com.bank.cliente.services.MovimientoService;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
@@ -41,7 +42,7 @@ public class MovimientosRestController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createmovimiento(@Valid @RequestBody MovimientoDTO movimiento) throws Exception {
+    public ResponseEntity<?> createmovimiento(@Valid @RequestBody CrearMovimientoDTO movimiento) throws Exception {
         try {
             return new ResponseEntity<>(movimientoService.createMovimiento(movimiento), HttpStatus.CREATED);
         } catch (Exception e) {
@@ -50,7 +51,7 @@ public class MovimientosRestController {
     }
 
     @PutMapping("/{movimientoid}")
-    public ResponseEntity<?> updateMovimiento(@Valid @RequestBody MovimientoDTO movimiento, @PathVariable Long movimientoid) throws Exception {
+    public ResponseEntity<?> updateMovimiento(@Valid @RequestBody UpdateMovimientoDTO movimiento, @PathVariable Long movimientoid) throws Exception {
         try {
             return new ResponseEntity<>(movimientoService.updateMovimiento(movimiento, movimientoid), HttpStatus.OK);
         } catch (Exception e) {

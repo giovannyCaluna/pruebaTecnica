@@ -1,7 +1,8 @@
 package com.bank.cliente.services;
 
-import com.bank.cliente.DTOs.MovimientoDTO;
+import com.bank.cliente.DTOs.CrearMovimientoDTO;
 import com.bank.cliente.DTOs.TransferenciaDTO;
+import com.bank.cliente.DTOs.UpdateMovimientoDTO;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -24,13 +25,13 @@ public class MovimientoService {
         return response.getBody();
     }
 
-    public Object createMovimiento(MovimientoDTO movimiento) {
+    public Object createMovimiento(CrearMovimientoDTO movimiento) {
         ResponseEntity<?> response = restTemplate.postForEntity(urlApiCuenta, movimiento, Object.class);
         return response.getBody();
 
     }
 
-    public String updateMovimiento(MovimientoDTO movimiento, Long movimientoId) throws Exception  {
+    public String updateMovimiento(UpdateMovimientoDTO movimiento, Long movimientoId) throws Exception  {
         String m1Url = urlApiCuenta + "/" + movimientoId;
         restTemplate.put(m1Url, movimiento);
         return "Movimiento actualizado";

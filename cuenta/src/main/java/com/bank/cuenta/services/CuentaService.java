@@ -2,11 +2,13 @@ package com.bank.cuenta.services;
 
 
 import com.bank.cuenta.DTOs.CuentaDTO;
+import com.bank.cuenta.DTOs.CuentaUpdateDTO;
 import com.bank.cuenta.data.ClienteRespository;
 import com.bank.cuenta.data.CuentasRepository;
 import com.bank.cuenta.exceptions.ClienteNotFoundException;
 import com.bank.cuenta.exceptions.CuentaAlreadyCreatedException;
 import com.bank.cuenta.exceptions.CuentaNotFoundException;
+import com.bank.cuenta.exceptions.TipoCuentaNoSoportado;
 import com.bank.cuenta.models.*;
 import org.springframework.stereotype.Service;
 
@@ -71,10 +73,28 @@ public class CuentaService {
         }
     }
 
-    public Cuenta updateCuenta(CuentaDTO cuentaDTO, String cuentaid) throws Exception {
+    public Cuenta updateCuenta(CuentaUpdateDTO cuentaUpdateDTO, String cuentaid) throws Exception {
         Optional<Cuenta> cuentaExistente = this.cuentasRepository.findById(cuentaid);
         if (cuentaExistente.isPresent()) {
-            cuentaExistente.get().setEstado(cuentaDTO.getEstado());
+            cuentaExistente.get().setEstado(cuentaUpdateDTO.getEstado());
+            cuentaExistente.get().setSaldoInicial(cuentaUpdateDTO.getSaldoInicial());
+            if (cuentaUpdateDTO.getTipoCuenta().equalsIgnoreCase("AHORROS")) {
+                try {
+                    CuentaAhorros cuentaAhorros = (CuentaAhorros) cuentaExistente.get();
+                    cuentaAhorros.setInteres(cuentaUpdateDTO.getInteres());
+                } catch (Exception e) {
+                    throw new TipoCuentaNoSoportado("La cuenta ha actualizar no es de tipo AHORROS.");
+                }
+            } else if (cuentaUpdateDTO.getTipoCuenta().equalsIgnoreCase("CORRIENTE")) {
+                try {
+                    CuentaCorriente cuentaCorriente = (CuentaCorriente) cuentaExistente.get();
+                    cuentaCorriente.setMontoDescubierto(cuentaUpdateDTO.getMontoDescubierto());
+                } catch (Exception e) {
+                    throw new TipoCuentaNoSoportado("La cuenta ha actualizar no es de tipo CORRIENTE.");
+                }
+            } else {
+                throw new TipoCuentaNoSoportado("Tipo de cuenta no soportado");
+            }
             return this.cuentasRepository.save(cuentaExistente.get());
         } else {
             throw new CuentaNotFoundException("Cuenta no encontrada");

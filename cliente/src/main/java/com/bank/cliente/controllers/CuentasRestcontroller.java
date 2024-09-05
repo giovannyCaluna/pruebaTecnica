@@ -1,6 +1,7 @@
 package com.bank.cliente.controllers;
 
 import com.bank.cliente.DTOs.CuentaDTO;
+import com.bank.cliente.DTOs.CuentaUpdateDTO;
 import com.bank.cliente.services.CuentaService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -36,7 +37,7 @@ public class CuentasRestcontroller {
     }
 
     @PutMapping("/{cuentaid}")
-    public ResponseEntity<?> updateCuenta(@Valid @RequestBody CuentaDTO cuenta, @PathVariable String cuentaid) {
+    public ResponseEntity<?> updateCuenta(@Valid @RequestBody CuentaUpdateDTO cuenta, @PathVariable String cuentaid) {
         try {
             return new ResponseEntity<>(cuentaService.updateCuenta(cuenta, cuentaid), HttpStatus.OK);
         } catch (Exception e) {
