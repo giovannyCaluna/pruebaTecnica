@@ -1,2 +1,2 @@
 # pruebaTecnica
-Prueba tecnica para Mid Java developer.
+Prueba tecnica para Java developer.
